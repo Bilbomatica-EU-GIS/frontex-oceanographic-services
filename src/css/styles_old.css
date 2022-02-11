@@ -1,0 +1,321 @@
+html {
+    font-family: Roboto, sans-serif;
+    color: #404040;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+html * {
+    box-sizing: border-box;
+}
+
+*, *::before, *::after {
+    -webkit-box-sizing: inherit;
+    box-sizing: inherit;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Time */
+.time-container {
+    padding-right: 1rem;
+}
+
+.time-switch-container {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    color: black;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 2.5rem;
+    height: 1.25rem;
+    margin: 0 1rem;
+}
+
+.switch input { 
+    display: none;
+}
+
+.switch-round {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f6f6f6;
+    outline: solid 1px lightgray;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.switch-round:before {
+    position: absolute;
+    content: "";
+    height: 0.75rem;
+    width: 0.75rem;
+    left: 4px;
+    bottom: 4px;
+    background-color: #0078CE;
+    -webkit-transition: .4s;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+input:focus + .switch-round { 
+    box-shadow: 0 0 1px #003399; 
+}
+
+input:checked + .switch-round:before {
+    -webkit-transform: translateX(1.25rem);
+    -ms-transform: translateX(1.25rem);
+    transform: translateX(1.25rem);
+}
+
+/* Table */
+.container {
+    width: auto;
+    overflow-x: auto;
+    white-space: nowrap;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+    border-spacing: 1px;
+}
+
+.hours-container .table-container td{
+    background: none;
+    color: #666666;
+}
+
+.group-container > tr:first-of-type {
+    border-top: solid 1rem white;
+}
+
+.group-title {
+    border-bottom: solid 1rem white;
+    background: white;
+    width: 100%;
+}
+
+.group-title td {
+    padding: 0.5rem;
+    font-weight: bold;
+    vertical-align: top;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: white;
+}
+
+.line-container th {
+    font-weight: normal;
+    background-color: white;
+}
+
+.title-container {
+    padding: 0.5rem 1rem;
+    color: #999999;
+    margin: 0;
+    font-weight: normal;
+    text-align: right;
+    position: sticky;
+    z-index: 1;
+    height: 2.2rem;
+    background: linear-gradient(to left, #ffffff0d 0%, #ffffff 0.5rem);
+}
+
+th.title-container {
+    left: 0;
+}
+
+#wave_height .title-container, #current_direction .title-container, #sea_temperature .title-container {
+    vertical-align: top;
+    height: 100px;
+}
+
+.line-container .chart-container, .line-container .table-container {
+    width: 100%;
+}
+
+.line-container .chart-container {
+    height: 100px;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    font-size: 0.75rem;
+    border-spacing: 1px;
+}
+
+.table-container td {
+    border: solid 0.5px white;
+    background-color: #FBEEB9;
+    white-space: nowrap;
+    width: 4rem;
+}
+
+.table-container .grey-table td {
+    background-color: #f6f6f6;
+}
+
+.table-container .white-table td {
+    position: relative;
+    background-color: white;
+}
+
+.table-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5rem auto;
+    white-space: nowrap;
+    width: 4rem;
+}
+
+.table-cell img {
+    height: 0.8rem;
+    margin-right: 0.25rem;
+}
+
+/* Loading */
+.loading-container {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-template-rows: 1fr 4fr 4fr;
+    grid-gap: 0.5rem;
+    overflow: hidden;
+    padding: 0.5rem;
+}
+
+.loading-cont {
+    display: block;
+    background-color: white;
+    width: 100%;
+    height: 100%;
+    border-radius: 0.5rem;
+    top: 0;
+    right: 0;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0.25rem 0.5rem 0 rgb(33 33 33 / 15%);
+}
+
+.loading-cont::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: -150px;
+    top: 0;
+    height: 100%;
+    width: 150px;
+    background: linear-gradient(to right, transparent 0%, #ebebeb80 50%, transparent 100%);
+    animation: loading-animation 2s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+}
+
+/* Animation */
+@keyframes loading-animation {
+    from {
+        left: -150px;
+    }
+    to   {
+        left: 100%;
+    }
+}
+
+/* Filters */
+.filter-list-container {
+    position: relative;
+}
+.filter-list {
+    display: none;
+    position: absolute;
+    z-index: 2;
+    background: white;
+    padding: 1rem;
+    border: solid 1px #999999;
+}
+.filter-option {
+    margin-bottom: 0.5rem;
+}
+.filter-selector {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem;
+    cursor: pointer;
+}
+.filter-selector img {
+    width: 0.75rem;
+    margin-left: 0.5rem;
+}
+
+/* Checkbox */
+input[type=checkbox]{
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 0;
+    display: none;
+}
+.check-label {
+    margin-bottom: 0;
+    cursor: pointer;
+}
+.check-input + .check-label {
+    padding-left: 1.5rem;
+}
+.check-input + .check-label {
+    position: relative;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.check-input + .check-label::after {
+    content: ' ';
+    display: block;
+    position: absolute;
+    left: 0;
+    top: 0.1rem;
+    background: 0 0;
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #404040;
+    border-radius: 2px;
+    background-color: white;
+}
+.check-input[disabled] + .check-label::after {
+    background-color: #eee;
+    border: 1px solid #dadada;
+    cursor: auto;
+}
+.check-input:checked + .check-label:before {
+    content: '';
+    display: block;
+    width: 0.3rem;
+    left: 0.35rem;
+    position: absolute;
+    top: 0.2rem;
+    height: 0.7rem;
+    border: solid;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    z-index: 1;
+    border-color: #0078CE;
+}
+.check-input:checked + .check-label::after, .form-check-input:checked + label::after {
+    border-color: #0078CE !important;
+}
