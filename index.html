@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="filter-option">
                                     <input type="checkbox" id="check_swell_period" name="" value="swell_period" class="check-input" checked>
-                                    <label class="check-label" for="check_swell_period">Swell period</label>
+                                    <label class="check-label" for="check_swell_period">Mean total swell period</label>
                                 </div>
                                 <div class="filter-option">
                                     <input type="checkbox" id="check_wind_direction" name="" value="wind_direction" class="check-input" checked>
@@ -61,19 +61,15 @@
                                 </div>
                                 <div class="filter-option">
                                     <input type="checkbox" id="check_wind_period" name="" value="wind_period" class="check-input" checked>
-                                    <label class="check-label" for="check_wind_period">Wind wave period</label>
+                                    <label class="check-label" for="check_wind_period">Mean wind wave period</label>
                                 </div>
                                 <div class="filter-option">
                                     <input type="checkbox" id="check_current_direction" name="" value="current_direction" class="check-input" checked>
                                     <label class="check-label" for="check_current_direction">Current direction and speed</label>
                                 </div>
                                 <div class="filter-option">
-                                    <input type="checkbox" id="check_high_tide" name="" value="high_tide" class="check-input" checked>
-                                    <label class="check-label" for="check_high_tide">High tide / height</label>
-                                </div>
-                                <div class="filter-option">
-                                    <input type="checkbox" id="check_low_tide" name="" value="low_tide" class="check-input" checked>
-                                    <label class="check-label" for="check_low_tide">Low tide / height</label>
+                                    <input type="checkbox" id="check_tides" name="" value="tides" class="check-input" checked>
+                                    <label class="check-label" for="check_tides">Tide height</label>
                                 </div>
                                 <div class="filter-option">
                                     <input type="checkbox" id="check_sea_temperature" name="" value="sea_temperature" class="check-input" checked>
@@ -131,9 +127,8 @@
                 </tr>
                 <tr class="line-container" id="swell_period">
                     <td class="title-container">
-                        <img class="info-icon" src="./src/img/info.svg" alt="Legend" data-info="period">
                         <span class="title-text">
-                            Swell period (s)
+                            Mean total swell period (s)
                         </span>
                     </td>
                 </tr>
@@ -147,16 +142,15 @@
                 </tr>
                 <tr class="line-container" id="wind_period">
                     <td class="title-container">
-                        <img class="info-icon" src="./src/img/info.svg" alt="Legend" data-info="period">
                         <span class="title-text">
-                            Wind wave period (s)
+                            Mean wind wave period (s)
                         </span>
                     </td>
                 </tr>
             </tbody>
             <tbody class="group-container" id="ocean">
                 <tr class="group-title">
-                    <td rowspan="5">
+                    <td rowspan="4">
                         Ocean
                     </td>
                 </tr>
@@ -167,17 +161,10 @@
                         </span>
                     </td>
                 </tr>
-                <tr class="line-container" id="high_tide">
+                <tr class="line-container" id="tides">
                     <td class="title-container">
                         <span class="title-text">
-                            High tide / height (m)
-                        </span>
-                    </td>
-                </tr>
-                <tr class="line-container" id="low_tide">
-                    <td class="title-container">
-                        <span class="title-text">
-                            Low tide / height (m)
+                            Tide height (m)
                         </span>
                     </td>
                 </tr>
@@ -191,93 +178,92 @@
             </tbody>
         </table>
         <div class="legend-container" id="legend_douglas">
-            <div class="legend-title">Title</div>
+            <div class="legend-title"></div>
             <div class="legend-body">
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #E6F8FD;"></span>
+                    <span class="legend-class-color" style="background: #CEE7C3;"></span>
                     <span class="legend-class-title">0 - Calm (glassy)</span>
                 </div>
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #CDF0FB;"></span>
+                    <span class="legend-class-color" style="background: #9CCF87;"></span>
                     <span class="legend-class-title">1 - Calm (rippled)</span>
                 </div>
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #B5E9F9;"></span>
+                    <span class="legend-class-color" style="background: #CADD77;"></span>
                     <span class="legend-class-title">2 - Smooth</span>
                 </div>
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #9CE2F7;"></span>
+                    <span class="legend-class-color" style="background: #F8EA66;"></span>
                     <span class="legend-class-title">3 - Slight</span>
                 </div>
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #83DBF5;"></span>
+                    <span class="legend-class-color" style="background: #FAD16C;"></span>
                     <span class="legend-class-title">4 - Moderate</span>
                 </div>
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #6AD3F3;"></span>
+                    <span class="legend-class-color" style="background: #FCB771;"></span>
                     <span class="legend-class-title">5 - Rough</span>
                 </div>
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #51CCF1;"></span>
+                    <span class="legend-class-color" style="background: #F48B70;"></span>
                     <span class="legend-class-title">6 - Very rough</span>
                 </div>
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #39C5EF;"></span>
+                    <span class="legend-class-color" style="background: #EC5F6E;"></span>
                     <span class="legend-class-title">7 - High</span>
                 </div>
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #20BDED;"></span>
+                    <span class="legend-class-color" style="background: #D07D9C;"></span>
                     <span class="legend-class-title">8 - Very high</span>
                 </div>
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #07B6EB;"></span>
+                    <span class="legend-class-color" style="background: #B49BCA;"></span>
                     <span class="legend-class-title">9 - Phenomenal</span>
                 </div>
             </div>
         </div>
-        <div class="legend-container" id="legend_period">
-            <div class="legend-title">Title</div>
-            <div class="legend-body">
-                <div class="legend-class">
-                    <span class="legend-class-color" style="background: #FFFFFF;"></span>
-                    <span class="legend-class-title">< 5</span>
-                </div>
-                <div class="legend-class">
-                    <span class="legend-class-color" style="background: #FEF9E8;"></span>
-                    <span class="legend-class-title">5-10</span>
-                </div>
-                <div class="legend-class">
-                    <span class="legend-class-color" style="background: #FCF4D0;"></span>
-                    <span class="legend-class-title">10-15</span>
-                </div>
-                <div class="legend-class">
-                    <span class="legend-class-color" style="background: #FBEEB9;"></span>
-                    <span class="legend-class-title">< 15</span>
-                </div>
-            </div>
-        </div>
         <div class="legend-container" id="legend_height">
-            <div class="legend-title">Title</div>
+            <div class="legend-title"></div>
             <div class="legend-body">
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #DFDFFC;"></span>
-                    <span class="legend-class-title">< 1</span>
+                    <span class="legend-class-color" style="background: #CEE7C3;"></span>
+                    <span class="legend-class-title">< 0.5</span>
                 </div>
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #B9BBFA;"></span>
-                    <span class="legend-class-title">1-2</span>
+                    <span class="legend-class-color" style="background: #9CCF87;"></span>
+                    <span class="legend-class-title">0.5-1</span>
                 </div>
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #F192FF;"></span>
-                    <span class="legend-class-title">2-4</span>
+                    <span class="legend-class-color" style="background: #CADD77;"></span>
+                    <span class="legend-class-title">1-1.5</span>
                 </div>
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #FF9C86;"></span>
-                    <span class="legend-class-title">4-6</span>
+                    <span class="legend-class-color" style="background: #F8EA66;"></span>
+                    <span class="legend-class-title">1.5-2</span>
                 </div>
                 <div class="legend-class">
-                    <span class="legend-class-color" style="background: #F8AE3E;"></span>
-                    <span class="legend-class-title">< 6</span>
+                    <span class="legend-class-color" style="background: #FAD16C;"></span>
+                    <span class="legend-class-title">2-3</span>
+                </div>
+                <div class="legend-class">
+                    <span class="legend-class-color" style="background: #FCB771;"></span>
+                    <span class="legend-class-title">3-4</span>
+                </div>
+                <div class="legend-class">
+                    <span class="legend-class-color" style="background: #F48B70;"></span>
+                    <span class="legend-class-title">4-5</span>
+                </div>
+                <div class="legend-class">
+                    <span class="legend-class-color" style="background: #EC5F6E;"></span>
+                    <span class="legend-class-title">5-6</span>
+                </div>
+                <div class="legend-class">
+                    <span class="legend-class-color" style="background: #D07D9C;"></span>
+                    <span class="legend-class-title">6-7</span>
+                </div>
+                <div class="legend-class">
+                    <span class="legend-class-color" style="background: #B49BCA;"></span>
+                    <span class="legend-class-title">> 7</span>
                 </div>
             </div>
         </div>

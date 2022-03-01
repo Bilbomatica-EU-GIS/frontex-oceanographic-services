@@ -86,12 +86,11 @@ input:checked + .switch-round:before {
     width: auto;
     overflow-x: auto;
     white-space: nowrap;
-    border-collapse: collapse;
     font-size: 0.8rem;
-    border-spacing: 1px;
+    border-spacing: 0px;
 }
 
-.hours-container .table-container td{
+.hours-container .table-container td {
     background: none;
 }
 
@@ -136,7 +135,7 @@ th.title-container {
     left: 0;
 }
 
-#wave_height .title-container, #current_direction .title-container, #sea_temperature .title-container {
+#wave_height .title-container, #current_direction .title-container, #sea_temperature .title-container, #tides .title-container {
     vertical-align: top;
     height: 100px;
 }
@@ -146,7 +145,7 @@ th.title-container {
 }
 
 .line-container .chart-container {
-    height: 100px;
+    height: 140px;
 }
 
 .table-container table {
@@ -159,7 +158,6 @@ th.title-container {
 
 .table-container td:not([colspan]) {
     border: solid 0.5px white;
-    background-color: #FBEEB9;
     white-space: nowrap;
     width: 4rem;
 }
@@ -185,6 +183,13 @@ th.title-container {
 .table-cell img {
     height: 0.8rem;
     /* margin-right: 0.25rem; */
+}
+
+.table-container .table-cell.empty-cell {
+    display: inline-block;
+    width: 3rem !important;
+    background: white;
+    border: none;
 }
 
 /* Loading */
