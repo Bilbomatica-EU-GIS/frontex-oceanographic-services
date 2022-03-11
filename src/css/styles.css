@@ -182,7 +182,6 @@ th.title-container {
 
 .table-cell img {
     height: 0.8rem;
-    /* margin-right: 0.25rem; */
 }
 
 .table-container .table-cell.empty-cell {
@@ -248,6 +247,7 @@ th.title-container {
 }
 .filter-selector-container {
     display: inline-block;
+    text-transform: capitalize;
 }
 
 .filter-selector {
@@ -267,13 +267,7 @@ th.title-container {
     width: 0.5rem;
     margin-left: 0.5rem;
     vertical-align: middle;
-    /* transform: rotate(0deg);
-    transition: all 0.5s; */
 }
-
-/* .filter-selector.open img {
-    transform: rotate(180deg);
-} */
 
 .filter-list-container {
     position: relative;
@@ -400,7 +394,7 @@ input[type=checkbox]{
     margin-right: 0.5rem;
 }
 
-/*  Tooltips  */
+/* Tooltips */
 .image-tooltip {
     display: flex;
     cursor: pointer;

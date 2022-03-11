@@ -5,10 +5,12 @@ makeRequest(lat, long);
 
 function makeRequest(lat, long) {
   Promise.all([
-    fetch('https://bm-eugis.tk/marine_data/data/'+long+'/'+lat).then(value => value.json()),
+    fetch('./config.json').then(value => value.json()).then(data => {
+      return fetch(data.url + '/' + long + '/' + lat).then(value => value.json());
+    })
   ])
   .then((obj) => {
-      var m = new MeteogramView(obj);
+    new MeteogramView(obj);
   })
   .catch((err) => {
     console.log(err);
