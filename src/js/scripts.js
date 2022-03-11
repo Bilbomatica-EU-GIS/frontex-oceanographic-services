@@ -2,7 +2,7 @@ class MeteogramView {
     constructor(cfg) {
         this.lat = cfg[0].Location.latitude;
         this.long = cfg[0].Location.longitude;
-        this.data = cfg;
+        this.data = cfg[0].Data;
         this.days = 2;
         this.dates;
         this.init(this.data);
@@ -15,16 +15,8 @@ class MeteogramView {
             else {
                 this.days = 2;
             }
-            Promise.all([
-                fetch('https://bm-eugis.tk/marine_data/data/' + long + '/' + lat).then(value => value.json()),
-            ])
-            .then((data) => {
-                this.hideLoading();
-                this.loadData(this.transformData(data));
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+            this.loadData(this.data);
+            this.hideLoading();
         });
 
         document.querySelector('.filter-selector').addEventListener('click',(e) => {
@@ -101,11 +93,9 @@ class MeteogramView {
         document.querySelectorAll('tbody .line-container td:not(.title-container)').forEach((line) => {
             line.remove();
         });
-
         document.querySelectorAll('thead .line-container th:not([colspan])').forEach((line) => {
             line.remove();
         });
-
         this.showLoading();
     }
 
@@ -120,7 +110,6 @@ class MeteogramView {
     }
 
     transformData(data) {
-        data = data[0].Data;
         let compoundVariables = ['Swell-Direction','Wind-Wave-Direction','Currents-Vector'];
         let swell = data.find((a) => a.VariableId == 'Swell-Height');
         let swellVector = data.find((a) => a.VariableId == 'Swell-Direction');
@@ -147,6 +136,8 @@ class MeteogramView {
             item.Direction = currentVector.Data[index].Value;
         });
         data = data.filter((a) => !compoundVariables.includes(a.VariableId));
+        data = data.map(b => {b.Data = b.Data.map(a => {a.DateTime = Date.parse(a.DateTime); return a}); return b});
+        this.data = data;
         return data;
     }
 
@@ -160,83 +151,82 @@ class MeteogramView {
     }
 
     loadData(data) {
-        data = data.map(b => {b.Data = b.Data.map(a => {a.DateTime = Date.parse(a.DateTime); return a}); return b});
-        data = data.map(b => {b.Data = b.Data.slice(0, 24*this.days); return b});
-        this.loadDate(data);
+        let filterData = data.map(obj => ({...obj})).map(b => {b.Data = b.Data.slice(0, 24*this.days); return b});
+        this.loadDate(filterData);
 
-        data.forEach((param) => {
+        filterData.forEach((param) => {
             switch (param.VariableId) {
                 case 'Wave-Sea-State':
                     this.container = document.querySelector('#sea_state');
                     this.variable = {title:param.Variable, unit:param.Units, id:param.VariableId};
-                    this.data = param.Data.map(a => {return {x:a.DateTime, y:a.Value}});
+                    this.chartData = param.Data.map(a => {return {x:a.DateTime, y:a.Value}});
                     this.addVariableName(this.container, this.variable);
                     this.type = {table:true, icon:false};
-                    this.getDataByDay(this.container, this.variable, this.data, this.type);
+                    this.getDataByDay(this.container, this.variable, this.chartData, this.type);
                     break;
                 case 'Wave-Height':
                     this.container = document.querySelector('#wave_height');
                     this.variable = {title:param.Variable, unit:param.Units, id:param.VariableId};
-                    this.data = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10, color:this.getBackgroundColor(Math.round(a.Value * 10)/10)}});
+                    this.chartData = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10, color:this.getBackgroundColor(Math.round(a.Value * 10)/10)}});
                     this.addVariableName(this.container, this.variable);
                     this.type = {chart:true, chartType:'area', table:true, icon:false, colors:false};
-                    this.getDataByDay(this.container, this.variable, this.data, this.type);
+                    this.getDataByDay(this.container, this.variable, this.chartData, this.type);
                     break;
                 case 'Swell-Direction-Height':
                     this.container = document.querySelector('#swell_direction');
                     this.variable = {title:param.Variable, unit:param.Units, id:param.VariableId};
-                    this.data = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10, direction:Math.round(a.Direction * 10)/10}});
+                    this.chartData = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10, direction:Math.round(a.Direction * 10)/10}});
                     this.addVariableName(this.container, this.variable);
                     this.type = {table:true, icon:true, colors:true};
-                    this.getDataByDay(this.container, this.variable, this.data, this.type);
+                    this.getDataByDay(this.container, this.variable, this.chartData, this.type);
                     break;
                 case 'Swell-Period':
                     this.container = document.querySelector('#swell_period');
                     this.variable = {title:param.Variable, unit:param.Units, id:param.VariableId};
-                    this.data = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10}});
+                    this.chartData = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10}});
                     this.addVariableName(this.container, this.variable);
                     this.type = {table:true, icon:false, colors:false};
-                    this.getDataByDay(this.container, this.variable, this.data, this.type);
+                    this.getDataByDay(this.container, this.variable, this.chartData, this.type);
                     break;
                 case 'Wind-Wave-Direction-Height':
                     this.container = document.querySelector('#wind_direction');
                     this.variable = {title:param.Variable, unit:param.Units, id:param.VariableId};
-                    this.data = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10, direction:Math.round(a.Direction * 10)/10}});
+                    this.chartData = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10, direction:Math.round(a.Direction * 10)/10}});
                     this.addVariableName(this.container, this.variable);
                     this.type = {table:true, icon:true, colors:true};
-                    this.getDataByDay(this.container, this.variable, this.data, this.type);
+                    this.getDataByDay(this.container, this.variable, this.chartData, this.type);
                     break;
                 case 'Wind-Wave-Period':
                     this.container = document.querySelector('#wind_period');
                     this.variable = {title:param.Variable, unit:param.Units, id:param.VariableId};
-                    this.data = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10}});
+                    this.chartData = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10}});
                     this.addVariableName(this.container, this.variable);
                     this.type = {table:true, icon:false};
-                    this.getDataByDay(this.container, this.variable, this.data, this.type);
+                    this.getDataByDay(this.container, this.variable, this.chartData, this.type);
                     break;
                 case 'Current-Direction-Speed':
                     this.container = document.querySelector('#current_direction');
                     this.variable = {title:param.Variable, unit:param.Units, id:param.VariableId};
-                    this.data = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 100)/100, direction:Math.round(a.Direction * 10)/10}});
+                    this.chartData = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 100)/100, direction:Math.round(a.Direction * 10)/10}});
                     this.addVariableName(this.container, this.variable);
                     this.type = {chart:true, chartType:'simple', table:true, icon:true, colors:false};
-                    this.getDataByDay(this.container, this.variable, this.data, this.type);
+                    this.getDataByDay(this.container, this.variable, this.chartData, this.type);
                     break;
                 case 'Tides':
                     this.container = document.querySelector('#tides');
                     this.variable = {title:param.Variable, unit:param.Units, id:param.VariableId};
-                    this.data = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10}});
+                    this.chartData = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10}});
                     this.addVariableName(this.container, this.variable);
                     this.type = {chart:true, chartType:'area', table:true, icon:false, colors:false};
-                    this.getDataByDay(this.container, this.variable, this.data, this.type);
+                    this.getDataByDay(this.container, this.variable, this.chartData, this.type);
                     break;
                 case 'Sea-Temperature':
                     this.container = document.querySelector('#sea_temperature');
                     this.variable = {title:param.Variable, unit:param.Units, id:param.VariableId};
-                    this.data = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10}});
+                    this.chartData = param.Data.map(a => {return {x:a.DateTime, y:Math.round(a.Value * 10)/10}});
                     this.addVariableName(this.container, this.variable);
                     this.type = {chart:true, chartType:'simple', table:true, icon:false, colors:false};
-                    this.getDataByDay(this.container, this.variable, this.data, this.type);
+                    this.getDataByDay(this.container, this.variable, this.chartData, this.type);
                     break;
             }
         });
@@ -269,7 +259,7 @@ class MeteogramView {
         hours.forEach((i) => {
             string = string + '<td>' +
                 '<div class="table-cell">' + 
-                    '<span>' + (i < 10 ? '0'+ i : i) + '</span>'+
+                    '<span>' + (i < 10 ? '0' + i : i) + '</span>' +
                 '</div>' +
             '</td>';
         });
@@ -294,11 +284,10 @@ class MeteogramView {
         var days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
         let string = '<td class="table-cell empty-cell"></td>';
         for (const date in daysFilter) {
-            let year = new Date(date).getFullYear();
             let month = new Date(date).getMonth() + 1;
             let day = new Date(date).getDate();
             var dayName = days[new Date(date).getDay()].toUpperCase();
-            let dateString = '<div class="date-container"><b>'+ dayName +'</b> <span>'+ (day < 10 ? '0'+ day : day) +'/'+ (month < 10 ? '0'+ month : month) +'</span></div>';
+            let dateString = '<div class="date-container"><b>' + dayName + '</b> <span>' + (day < 10 ? '0' + day : day) + '/' + (month < 10 ? '0' + month : month) + '</span></div>';
             string = string + '<td colspan=' + daysFilter[date] + ' width=' + daysFilter[date]/data.length*100 + '%>' + dateString + '</td>';
         }
         ta.innerHTML = '<tr>' + string + '</tr>';
@@ -314,7 +303,7 @@ class MeteogramView {
     }
 
     addVariableName(container, variable) {
-        container.querySelector('.title-container span').innerText = variable.title +' ('+ variable.unit +')';
+        container.querySelector('.title-container span').innerText = variable.title + ' (' + variable.unit + ')';
         document.querySelector('input[value="' + container.id + '"]').parentElement.querySelector('label').innerText = variable.title;
     }
 
@@ -408,34 +397,24 @@ class MeteogramView {
         switch (true) {
             case (value < 0.5):
                 return '#CEE7C3'
-                break;
             case (value >= 0.5 && value < 1):
                 return '#9CCF87'
-                break;
             case (value >= 1 && value < 1.5):
                 return '#CADD77'
-                break;
             case (value >= 1.5 && value < 2):
                 return '#F8EA66'
-                break;
             case (value >= 2 && value < 3):
                 return '#FAD16C'
-                break;
             case (value >= 3 && value < 4):
                 return '#FCB771'
-                break;
             case (value >= 4 && value < 5):
                 return '#F48B70'
-                break;
             case (value >= 5 && value < 6):
                 return '#EC5F6E'
-                break;
             case (value >= 6 && value < 7):
                 return '#D07D9C'
-                break;
             case (value >= 7):
                 return '#B49BCA'
-                break;
         }
     }
 
